@@ -33,6 +33,16 @@ class NewsCubit extends Cubit<NewsStates> {
     currentIndex = index;
     emit(BottomNavBarState());
   }
+  int selected=0;
+  bool isDesktop=false;
+  void selectItem(int index){
+    selected=index;
+    emit(SelectItemState());
+  }
+  void desktop(bool value){
+    isDesktop=value;
+    emit(IsDesktopState());
+  }
 
   void getBusinessData() {
     emit(BusinessStateLoading());

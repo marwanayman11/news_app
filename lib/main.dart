@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -6,12 +7,15 @@ import 'package:news_app/shared/network/local/bloc_observer.dart';
 import 'package:news_app/shared/network/local/cache_helper.dart';
 import 'package:news_app/shared/network/remote/dio_helper.dart';
 import 'package:news_app/shared/network/styles/styles.dart';
+import 'package:responsive_builder/responsive_builder.dart';
 import 'layout/cubit/cubit.dart';
 import 'layout/cubit/states.dart';
+import 'package:desktop_window/desktop_window.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
+   // if(Platform.isLinux)
+   //   await DesktopWindow.setMinWindowSize(Size(350,650));
   Bloc.observer = MyBlocObserver();
   DioHelper.init();
   await CacheHelper.init();
@@ -49,7 +53,7 @@ class MyApp extends StatelessWidget {
                   ? ThemeMode.dark
                   : ThemeMode.light,
               debugShowCheckedModeBanner: false,
-              home: const NewsLayout());
+              home: NewsLayout());
         },
         listener: (context, state) {},
       ),

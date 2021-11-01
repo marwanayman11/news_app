@@ -28,5 +28,7 @@ class SearchStateError extends NewsStates{
   SearchStateError(this.error);
 }
 class ChangeThemeState extends NewsStates{}
+class SelectItemState extends NewsStates{}
+class IsDesktopState extends NewsStates{}
 
 

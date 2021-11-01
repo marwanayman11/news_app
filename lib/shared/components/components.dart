@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:news_app/layout/cubit/cubit.dart';
 import 'package:news_app/modules/webview/webview.dart';
 import 'package:news_app/shared/network/local/cache_helper.dart';
 
@@ -59,54 +60,58 @@ Widget newsView({required dynamic n, required int i, required context}) =>
           physics: const BouncingScrollPhysics(),
           itemBuilder: (context, index) => InkWell(
             onTap: () {
-              pushTo(context, WebViewScreen(n[index]['url']));
+              NewsCubit.get(context).selectItem(index);
+              //pushTo(context, WebViewScreen(n[index]['url']));
             },
-            child: Card(
-              color: CacheHelper.getData(key: 'theme')?Colors.grey[900]:Colors.white,
-              elevation: 20,
-              child: Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
+            child: Container(
+              color: NewsCubit.get(context).selected==index && NewsCubit.get(context).isDesktop ?Colors.blue:null,
+              child: Card(
+                color: CacheHelper.getData(key: 'theme')?Colors.grey[900]:Colors.white,
+                elevation: 20,
+                child: Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(
 
-                      child: SizedBox(
-                        width: 140,
-                        height: 140,
-                        child: CachedNetworkImage(
-                          fit: BoxFit.cover,
-                          imageUrl: '${n[index]['urlToImage']}',
-                          placeholder: (context, url) => const CircularProgressIndicator(),
-                          errorWidget: (context, url, error) => const Icon(Icons.image_not_supported,size: 100,color: Colors.blue,),
+                        child: SizedBox(
+                          width: 140,
+                          height: 140,
+                          child: CachedNetworkImage(
+                            fit: BoxFit.cover,
+                            imageUrl: '${n[index]['urlToImage']}',
+                            placeholder: (context, url) => const CircularProgressIndicator(),
+                            errorWidget: (context, url, error) => const Icon(Icons.image_not_supported,size: 100,color: Colors.blue,),
+                          ),
                         ),
                       ),
-                    ),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    Expanded(
-
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "${n[index]['title']} ",
-                            maxLines: 3,
-                            textAlign: TextAlign.right,
-                            overflow: TextOverflow.ellipsis,
-                            style: Theme.of(context).textTheme.bodyText1,
-                          ),
-                          Text(
-                            "${n[index]['publishedAt']}",
-                            style: Theme.of(context).textTheme.bodyText2,
-                          ),
-                        ],
+                      const SizedBox(
+                        width: 10,
                       ),
-                    )
-                  ],
+                      Expanded(
+
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "${n[index]['title']} ",
+                              maxLines: 3,
+                              textAlign: TextAlign.right,
+                              overflow: TextOverflow.ellipsis,
+                              style: Theme.of(context).textTheme.bodyText1,
+                            ),
+                            Text(
+                              "${n[index]['publishedAt']}",
+                              style: Theme.of(context).textTheme.bodyText2,
+                            ),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
                 ),
               ),
             ),
